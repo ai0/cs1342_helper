@@ -163,3 +163,5 @@ dmypy.json
 
 # Students data
 data/*.csv
+N12/
+N13/

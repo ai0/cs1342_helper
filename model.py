@@ -8,3 +8,7 @@ class Student:
     smu_id: str
     smu_email: str
     github_username: str
+
+    @property
+    def full_name(self):
+        return ' '.join((self.first_name, self.last_name))
