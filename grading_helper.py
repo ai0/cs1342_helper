@@ -2,6 +2,7 @@ import os
 import asyncio
 import pathlib
 import shutil
+import csv
 from argparse import ArgumentParser
 
 from model import Student
@@ -13,7 +14,17 @@ TEMPLATES_DIR = pathlib.Path(os.path.abspath(__file__)).parent / 'templates'
 
 
 def load_students(section):
-    return [Student(first_name='tf', last_name='boy', smu_id='888', smu_email='x@smu.edu', github_username='47724564')]
+    data_path = DATA_DIR / f'{section}.csv'
+    students = []
+    with open(data_path, 'r') as csv_file:
+        reader = csv.reader(csv_file, delimiter=',')
+        next(reader)
+        for row in reader:
+            if row[4] == '':
+                print(f'Missing GitHub username for student {row[0]} - {row[1]} {row[2]} ({row[3]})')
+            else:
+                students.append(Student(smu_id=row[0], first_name=row[1], last_name=row[2], smu_email=row[3], github_username=row[4]))
+    return students
 
 
 @async_retry(tries=2)
